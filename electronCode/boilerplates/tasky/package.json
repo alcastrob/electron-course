@@ -8,15 +8,14 @@
     "electron": "electron ."
   },
   "author": "Rallycoding",
-  "devDependencies": {
-    "electron": "~1.6.2"
-  },
+  "devDependencies": {},
   "dependencies": {
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-1": "^6.22.0",
+    "electron": "^3.0.10",
     "electron-localshortcut": "^1.1.1",
     "moment": "^2.18.1",
     "moment-duration-format": "^1.3.0",
