@@ -18,11 +18,13 @@ app.on('ready', () => {
 
 const menuTemplate = [{
     label: 'File',
-    submenu: [{
-            label: 'Submenu'
-        },
+    submenu: [
+        { label: 'New Todo' },
         {
-            label: 'Quit'
+            label: 'Quit', 
+            click() {
+                app.quit();
+            }
         }
     ]
 }];
