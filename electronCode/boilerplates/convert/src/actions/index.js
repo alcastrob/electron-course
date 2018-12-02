@@ -1,8 +1,7 @@
-import { ADD_VIDEO, ADD_VIDEOS, REMOVE_VIDEO, REMOVE_ALL_VIDEOS, VIDEO_PROGRESS, VIDEO_COMPLETE } from "./types";
-//ES5
 import { ipcRenderer } from 'electron';
+import { ADD_VIDEO, ADD_VIDEOS, REMOVE_VIDEO, REMOVE_ALL_VIDEOS, VIDEO_PROGRESS, VIDEO_COMPLETE } from "./types";
 
-// Communicate to MainWindow process that videos
+// TODO: Communicate to MainWindow process that videos
 // have been added and are pending conversion
 export const addVideos = videos => dispatch => {
   ipcRenderer.send('videos:added', videos);
@@ -11,22 +10,26 @@ export const addVideos = videos => dispatch => {
   });
 };
 
-
-// Communicate to MainWindow that the user wants
+// TODO: Communicate to MainWindow that the user wants
 // to start converting videos.  Also listen for feedback
 // from the MainWindow regarding the current state of
 // conversion.
 export const convertVideos = videos => dispatch => {
   ipcRenderer.send('conversion:start', videos);
-  ipcRenderer.on('conversion:end', (event, { video, outputPath}) =>{
-    dispatch({ type: VIDEO_COMPLETE, payload: {...video, outputPath}});
+
+  ipcRenderer.on('conversion:end', (event, { video, outputPath }) => {
+    dispatch({ type: VIDEO_COMPLETE, payload: { ...video, outputPath } });
+  });
+
+  ipcRenderer.on('conversion:progress', (event, { video, timemark }) => {
+    dispatch({ type: VIDEO_PROGRESS, payload: { ...video, timemark }});
   });
 };
 
 // TODO: Open the folder that the newly created video
 // exists in
 export const showInFolder = outputPath => dispatch => {
-
+  ipcRenderer.send('folder:open', outputPath);
 };
 
 export const addVideo = video => {
