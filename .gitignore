@@ -9,3 +9,6 @@ videoinfo/ffprobe.exe
 videoinfo/ffplay.exe
 videoinfo/ffmpeg.exe
 >>>>>>> todos
+electronCode/boilerplates/convert/ffprobe.exe
+electronCode/boilerplates/convert/ffmpeg.exe
+electronCode/boilerplates/convert/ffplay.exe
