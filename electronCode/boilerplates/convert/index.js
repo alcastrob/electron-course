@@ -2,23 +2,17 @@ const electron = require('electron');
 const ffmpeg = require('fluent-ffmpeg');
 const _ = require('lodash');
 
-const {
-    app,
-    BrowserWindow,
-    ipcMain
-} = electron;
+const { app, BrowserWindow, ipcMain, shell } = electron;
 
 let mainWindow;
 
 app.on('ready', () => {
-    mainWindow = new BrowserWindow({
-        height: 600,
-        width: 800,
-        webPreferences: {
-            backgroundThrottling: false
-        }
-    });
-    mainWindow.loadURL(`file://${__dirname}/src/index.html`)
+  mainWindow = new BrowserWindow({
+    height: 600,
+    width: 800,
+    webPreferences: { backgroundThrottling: false }
+  });
+  mainWindow.loadURL(`file://${__dirname}/src/index.html`);
 });
 
 ipcMain.on('videos:added', (event, videos) => {
@@ -36,4 +30,18 @@ ipcMain.on('videos:added', (event, videos) => {
         .then((results) => {
             mainWindow.webContents.send('metadata:complete', results);
         });
+});
+
+ipcMain.on('conversion:start', (event, videos) => {
+    _.each(videos, video => {
+        const outputDirectory = video.path.split(video.name)[0];
+        const outputName = video.name.split('.')[0];
+        const outputPath = `${outputDirectory}${outputName}.${video.format}`;
+
+        ffmpeg(video.path)
+            .output(outputPath)
+            .on('progress', () => console.log(event))
+            .on('end', () => mainWindow.webContents.send('conversion:end', { video, outputPath}))
+            .run();
+    });
 });
