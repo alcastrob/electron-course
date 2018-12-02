@@ -1,4 +1,11 @@
 videoinfo/node_modules/
+<<<<<<< HEAD
 videoinfo/ffplay.exe
 videoinfo/ffmpeg.exe
 videoinfo/ffprobe.exe
+=======
+todos/node_modules/
+videoinfo/ffprobe.exe
+videoinfo/ffplay.exe
+videoinfo/ffmpeg.exe
+>>>>>>> todos
