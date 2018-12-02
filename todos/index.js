@@ -28,7 +28,9 @@ function createAddWindow() {
     });
     addWindow.loadURL(`file://${__dirname}/add.html`);
     //To prevent the propagation of the menu of the main window to this one.
-    //addWindow.setMenu(null);
+    addWindow.setMenu(null);
+    //For memory management.
+    addWindow.on('closed', () => addWindow = null);
 }
 
 ipcMain.on('todo:add', (event, todo) => {
@@ -43,6 +45,12 @@ const menuTemplate = [{
             label: 'New Todo',
             click() {
                 createAddWindow();
+            }
+        },
+        {
+            label: 'Clear Todos',
+            click() {
+                mainWindow.webContents.send('todo:clear');
             }
         },
         {
@@ -70,8 +78,11 @@ if (process.env.NODE_ENV !== 'production'){
                 accelerator: process.platform === 'darwing' ? 'Command+Alt+I' : 'F12',
                 click(item, focusedWindow) {
                     focusedWindow.toggleDevTools();
-
                 }
+            },
+            {
+                role: 'reload'
+                //For reloading the full page inside the window
             }
         ]
     })
